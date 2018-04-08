@@ -7,3 +7,7 @@
 2.writer 写作模块
 
 
+命名规范
+1.controller的方法
+home,list, add, edit, delete, view
+
