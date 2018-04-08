@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax验证测试</title>
+</head>
+<script src="/static/js/jquery-3.3.1.min.js"></script>
+<script>
+
+$(function(){
+
+$("#pu").bind('keyup',function(){
+c=$("#pu").val()
+$.ajax({
+type:"POST",
+url:"/aaa/",
+data:{name:c},
+dataType:"json",
+ success: function(data) {
+$("#p").text(data.msg + data.code)
+}
+});
+})
+})
+
+
+</script>
+<body>
+<h1>{{ title }}</h1>
+<h1>输入名字进行校验：</h1><input id="pu"type="text"> <span id="p"style="color: red"></span>
+</body>
+</html>

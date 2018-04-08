@@ -16,10 +16,14 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from .controller.test import view
+from .controller.test import ajaxctr
+from .controller.test import ajaxtest
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^hello/', view.hello),
     url(r'^index/', view.hello),
+    url(r'^ajaxtest/', ajaxtest.main),
+    url(r'^aaa/$', ajaxctr.aaa),
     # url(r'^$', view.hello),
 ]
