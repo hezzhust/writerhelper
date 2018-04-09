@@ -18,12 +18,14 @@ from django.contrib import admin
 from .controller.test import view
 from .controller.test import ajaxctr
 from .controller.test import ajaxtest
+from .controller.bootstrap import dashboard
 
 urlpatterns = [
     # url(r'^admin/', admin.site.urls),
     url(r'^hello/', view.hello),
     url(r'^index/', view.hello),
     url(r'^ajaxtest/', ajaxtest.main),
+    url(r'^dashboard/index', dashboard.index),
     url(r'^aaa/$', ajaxctr.aaa),
     # url(r'^$', view.hello),
 ]

@@ -9,5 +9,5 @@
 
 命名规范
 1.controller的方法
-home,list, add, edit, delete, view
+index,list, add, edit, delete, view
 
