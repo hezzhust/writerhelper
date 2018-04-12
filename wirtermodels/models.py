@@ -140,22 +140,32 @@ class Sentence(BaseModel):
 # ----------------- 设定表 ------------------------
 # 人物设定表
 class SettingPerson(BaseDataModel):
-    describe = models.CharField(max_length=2000, null=True)  # 翻译描述
+    appearance = models.CharField(max_length=1000, null=True)  # 外貌描述
+    character = models.CharField(max_length=1000, null=True)  # 性格描述
+    describe = models.CharField(max_length=2000, null=True)  # 其他描述
     tags = models.ManyToManyField(DictTag, db_table='mid_setperson_tag')  # 标签
     titles = models.ManyToManyField(DictTitle, db_table='mid_setperson_title')  # 头衔
+    age = models.IntegerField(default=0); # 年龄
+    sex = models.IntegerField(default=0); # 1 男， 2 女
     class Meta:
         db_table = "setting_person"
 
 
 # 道具设定表
 class SettingProp(BaseDataModel):
-    describe = models.CharField(max_length=2000, null=True)  # 翻译描述
+    describe = models.CharField(max_length=2000, null=True)  # 描述
     class Meta:
         db_table = "setting_prop"
 
 
 # 法术设定表
 class SettingPerson(BaseDataModel):
-    describe = models.CharField(max_length=2000, null=True)  # 翻译描述
+    describe = models.CharField(max_length=2000, null=True)  # 描述
     class Meta:
         db_table = "setting_person"
+
+# 其他设定表
+class SettingOther(BaseDataModel):
+    describe = models.CharField(max_length=2000, null=True)  # 描述
+    class Meta:
+        db_table = "setting_other"
