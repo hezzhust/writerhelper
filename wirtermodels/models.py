@@ -33,7 +33,7 @@ class BaseDataModel(BaseModel):
 # 姓
 class DictFirstName(BaseDictModel):
     name = models.CharField(max_length=50, db_index=True)  # 名称
-    describe = models.CharField(null=True)  # 来源
+    describe = models.CharField(max_length=2000, null=True)  # 来源
 
     class Meta:
         db_table = "dict_first_name"
@@ -42,7 +42,7 @@ class DictFirstName(BaseDictModel):
 # 名
 class DictSecondName(BaseDictModel):
     name = models.CharField(max_length=50, db_index=True)  # 名称
-    describe = models.CharField(null=True)  # 来源
+    describe = models.CharField(max_length=2000, null=True)  # 来源
 
     class Meta:
         db_table = "dict_second_name"
@@ -51,7 +51,7 @@ class DictSecondName(BaseDictModel):
 # 字
 class DictThridName(BaseDictModel):
     name = models.CharField(max_length=50, db_index=True)  # 名称
-    describe = models.CharField(null=True)  # 来源
+    describe = models.CharField(max_length=2000, null=True)  # 来源
 
     class Meta:
         db_table = "dict_third_name"
@@ -125,16 +125,17 @@ class Chapter(BaseDataModel):
     class Meta:
         db_table = "data_chapter"
 
+
 # 章节 名言警句 成语
 class Sentence(BaseModel):
     book = models.ForeignKey(Book, models.DO_NOTHING, blank=True, null=True)
     chapter = models.ForeignKey(Chapter, models.DO_NOTHING, blank=True, null=True)
     author = models.ForeignKey(Author, models.DO_NOTHING, blank=True, null=True)
     content = models.CharField(max_length=1000, null=True)  # 文本内容
-    describe = models.CharField(max_length=2000,null=True)  # 翻译描述
+    describe = models.CharField(max_length=2000, null=True)  # 翻译描述
 
     class Meta:
-        b_table = "data_sentence"
+        db_table = "data_sentence"
 
 
 # ----------------- 设定表 ------------------------
@@ -145,8 +146,10 @@ class SettingPerson(BaseDataModel):
     describe = models.CharField(max_length=2000, null=True)  # 其他描述
     tags = models.ManyToManyField(DictTag, db_table='mid_setperson_tag')  # 标签
     titles = models.ManyToManyField(DictTitle, db_table='mid_setperson_title')  # 头衔
-    age = models.IntegerField(default=0); # 年龄
-    sex = models.IntegerField(default=0); # 1 男， 2 女
+    age = models.IntegerField(default=0);  # 年龄
+    sex = models.IntegerField(default=0);  # 1 男， 2 女
+    book = models.ForeignKey(Book, models.DO_NOTHING, blank=True, null=True)
+
     class Meta:
         db_table = "setting_person"
 
@@ -154,18 +157,46 @@ class SettingPerson(BaseDataModel):
 # 道具设定表
 class SettingProp(BaseDataModel):
     describe = models.CharField(max_length=2000, null=True)  # 描述
+    level = models.CharField(max_length=100, null=True)  # 品质等级
+    book = models.ForeignKey(Book, models.DO_NOTHING, blank=True, null=True)
+
     class Meta:
         db_table = "setting_prop"
 
 
 # 法术设定表
-class SettingPerson(BaseDataModel):
+class SettingMagic(BaseDataModel):
     describe = models.CharField(max_length=2000, null=True)  # 描述
+    level = models.CharField(max_length=100, null=True)  # 品质等级
+    book = models.ForeignKey(Book, models.DO_NOTHING, blank=True, null=True)
+
     class Meta:
-        db_table = "setting_person"
+        db_table = "setting_magic"
+
+# 世界设定表
+class SettingWorld(BaseDataModel):
+    describe = models.CharField(max_length=2000, null=True)  # 描述
+    level = models.CharField(max_length=100, null=True)  # 品质等级
+    book = models.ForeignKey(Book, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        db_table = "setting_world"
+
+# 势力设定表
+class SettingPower(BaseDataModel):
+    describe = models.CharField(max_length=2000, null=True)  # 描述
+    level = models.CharField(max_length=100, null=True)  # 品质等级
+    book = models.ForeignKey(Book, models.DO_NOTHING, blank=True, null=True)
+
+    class Meta:
+        db_table = "setting_power"
+
 
 # 其他设定表
 class SettingOther(BaseDataModel):
     describe = models.CharField(max_length=2000, null=True)  # 描述
+    level = models.CharField(max_length=100, null=True)  # 品质等级
+    book = models.ForeignKey(Book, models.DO_NOTHING, blank=True, null=True)
+
     class Meta:
         db_table = "setting_other"
