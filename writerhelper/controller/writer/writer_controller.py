@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
-from wirtermodels.models import BookInfo
+from wirtermodels.models import Book
 
 def saveBook(request):
-    book = BookInfo (name="《三体》")
+    book = Book (name="《三体》")
     book.save()
     content = {}
     content['hello'] = "欢迎光临"

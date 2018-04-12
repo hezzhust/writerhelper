@@ -4,7 +4,7 @@
 Django + bootstrap + mysql
 
 模块划分
-1.manage 后台管理
+1.django amdin  复用django自带的后台管理
 
 2.writer 写作模块
 

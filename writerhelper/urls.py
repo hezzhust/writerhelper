@@ -19,12 +19,12 @@ from django.contrib import admin
 from .controller.test import ajaxctr
 from .controller.test import ajaxtest
 from .controller.bootstrap import dashboard
-from .controller.writer import writer
+from .controller.writer import writer_controller
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^hello/', writer.saveBook),
-    url(r'^index/', writer.saveBook),
+    url(r'^hello/', writer_controller.saveBook),
+    url(r'^index/', writer_controller.saveBook),
     url(r'^ajaxtest/', ajaxtest.main),
     url(r'^dashboard/index', dashboard.index),
     url(r'^aaa/$', ajaxctr.aaa),
