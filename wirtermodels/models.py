@@ -7,8 +7,8 @@ import datetime
 
 # Create your models here.
 class BaseModel(models.Model):
-    create_time = models.DateTimeField(default=datetime.datetime)
-    modify_time = models.DateTimeField(null=True)
+    create_time = models.DateTimeField(default=datetime.datetime.now())
+    modify_time = models.DateTimeField(blank=True,null=True)
     status = models.IntegerField(default=0)  # 0-隐藏，1-发布，-1删除
 
     class Meta:
@@ -173,6 +173,7 @@ class SettingMagic(BaseDataModel):
     class Meta:
         db_table = "setting_magic"
 
+
 # 世界设定表
 class SettingWorld(BaseDataModel):
     describe = models.CharField(max_length=2000, null=True)  # 描述
@@ -181,6 +182,7 @@ class SettingWorld(BaseDataModel):
 
     class Meta:
         db_table = "setting_world"
+
 
 # 势力设定表
 class SettingPower(BaseDataModel):
@@ -197,6 +199,9 @@ class SettingOther(BaseDataModel):
     describe = models.CharField(max_length=2000, null=True)  # 描述
     level = models.CharField(max_length=100, null=True)  # 品质等级
     book = models.ForeignKey(Book, models.DO_NOTHING, blank=True, null=True)
+
+    def __unicode__(self):
+        return self.describe, self.level, self.book
 
     class Meta:
         db_table = "setting_other"

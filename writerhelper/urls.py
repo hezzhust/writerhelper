@@ -16,17 +16,17 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 # from .controller.test import view
-from .controller.test import ajaxctr
-from .controller.test import ajaxtest
-from .controller.bootstrap import dashboard
-from .controller.writer import writer_controller
+from .view.test import ajaxctr
+from .view.test import ajaxtest
+from .view.bootstrap import dashboard
+from .view.writer import writer_view
 
 urlpatterns = [
+    url(r'^$', ajaxtest.index),
     url(r'^admin/', admin.site.urls),
-    url(r'^hello/', writer_controller.saveBook),
-    url(r'^index/', writer_controller.saveBook),
-    url(r'^ajaxtest/', ajaxtest.main),
+    url(r'^hello/', writer_view.saveBook),
+    url(r'^index/', writer_view.saveBook),
+    url(r'^ajaxtest/', ajaxtest.index),
     url(r'^dashboard/index', dashboard.index),
     url(r'^aaa/$', ajaxctr.aaa),
-    # url(r'^$', view.hello),
 ]
