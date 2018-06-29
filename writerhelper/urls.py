@@ -20,6 +20,7 @@ from .view.test import ajaxctr
 from .view.test import ajaxtest
 from .view.bootstrap import dashboard
 from .view.writer import writer_view
+from .view.system import system_view
 
 urlpatterns = [
     url(r'^$', ajaxtest.index),
@@ -29,4 +30,7 @@ urlpatterns = [
     url(r'^ajaxtest/', ajaxtest.index),
     url(r'^dashboard/index', dashboard.index),
     url(r'^aaa/$', ajaxctr.aaa),
+    url(r'^login$', system_view.login_view, name='login'),
+    url(r'^logout', system_view.logout_view),
+    url(r'^register$', system_view.register_view, name='register'),
 ]

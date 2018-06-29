@@ -7,9 +7,10 @@ import datetime
 
 # Create your models here.
 class BaseModel(models.Model):
-    create_time = models.DateTimeField(default=datetime.datetime.now())
+    create_time = models.DateTimeField(default=datetime.datetime.now)
     modify_time = models.DateTimeField(blank=True,null=True)
     status = models.IntegerField(default=0)  # 0-隐藏，1-发布，-1删除
+    ops_user_id = models.CharField(max_length= 50, blank=True, null=True) #操作员工id
 
     class Meta:
         abstract = True
