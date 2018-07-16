@@ -9,22 +9,27 @@ import datetime
 class BaseModel(models.Model):
     name = models.CharField(max_length=400, db_index=True)  # 名称  , 指定 db_index=True
     create_time = models.DateTimeField(default=datetime.datetime.now, db_index=True)
-    modify_time = models.DateTimeField(default=datetime.datetime.now, blank=True, null=True)
+    modify_time = models.DateTimeField(default=datetime.datetime.now, blank=True)
     status = models.IntegerField(default=0)  # 0-隐藏，1-发布，-1删除
-    ops_user_id = models.CharField(max_length=50, blank=True, null=True)  # 操作员工id
+    ops_user_id = models.CharField(max_length=50, blank=True)  # 操作员工id
+
+    def __unicode__(self):
+        return self.name, self.create_time, self.modify_time, self.status, self.ops_user_id
 
     class Meta:
         abstract = True
 
 
+
+
 class DictModel(BaseModel):
-    first_type = models.CharField(max_length=200, blank=True, null=True)  # 一级类型
-    second_type = models.CharField(max_length=200, blank=True, null=True)  # 二级类型
-    third_type = models.CharField(max_length=200, blank=True, null=True)  # 三级类型
-    fourth_type = models.CharField(max_length=200, blank=True, null=True)  # 四级类型
-    fifth_type = models.CharField(max_length=200, blank=True, null=True)  # 五级类型
-    tags = models.CharField(max_length=200, blank=True, null=True)  # 分类标签
-    describe = models.CharField(max_length=2000, null=True)  # 描述
+    first_type = models.CharField(max_length=200, blank=True)  # 一级类型
+    second_type = models.CharField(max_length=200, blank=True)  # 二级类型
+    third_type = models.CharField(max_length=200, blank=True)  # 三级类型
+    fourth_type = models.CharField(max_length=200, blank=True)  # 四级类型
+    fifth_type = models.CharField(max_length=200, blank=True)  # 五级类型
+    tags = models.CharField(max_length=200, blank=True)  # 分类标签
+    describe = models.CharField(max_length=2000, blank=True)  # 描述
 
     class Meta:
         abstract = True
@@ -58,8 +63,8 @@ class DictName(BaseModel):
 
 # 诗词表，用于存放中国古代诗词
 class DictPoem(DictModel):
-    content = models.CharField(max_length=5000, blank=True, null=True)  # 内容
-    remarks = models.CharField(max_length=1000, blank=True, null=True)  # 解析注释
+    content = models.CharField(max_length=5000, blank=True)  # 内容
+    remarks = models.CharField(max_length=1000, blank=True)  # 解析注释
 
     class Meta:
         db_table = "dict_poem"
@@ -71,7 +76,7 @@ class DictPoem(DictModel):
 
 # 成语，俗语, 名言
 class DictIdiom(DictModel):
-    remarks = models.CharField(max_length=1000, blank=True, null=True)  # 解析注释
+    remarks = models.CharField(max_length=1000, blank=True)  # 解析注释
 
     class Meta:
         db_table = "dict_idiom"
@@ -80,11 +85,11 @@ class DictIdiom(DictModel):
 
 # 名人
 class DictPerson(DictModel):
-    country = models.CharField(max_length=100, blank=True, null=True)  # 国家
-    first_name = models.CharField(max_length=100, blank=True, null=True)  # 姓
+    country = models.CharField(max_length=100, blank=True)  # 国家
+    first_name = models.CharField(max_length=100, blank=True)  # 姓
     sex = models.IntegerField(default=0);  # 0-无，1-男， 2-女
-    birthday = models.CharField(max_length=100, blank=True, null=True)  # 生辰日期
-    death_day = models.CharField(max_length=100, blank=True, null=True)  # 死亡日期
+    birthday = models.CharField(max_length=100, blank=True)  # 生辰日期
+    death_day = models.CharField(max_length=100, blank=True)  # 死亡日期
 
     class Meta:
         db_table = "dict_peron"
@@ -93,7 +98,7 @@ class DictPerson(DictModel):
 
 # 地区字典表
 class DictArea(DictModel):
-    fullName = models.CharField(max_length=100, null=True)  # 完整地名
+    fullName = models.CharField(max_length=100)  # 完整地名
 
     class Meta:
         db_table = "dict_area"
@@ -106,8 +111,8 @@ class DictArea(DictModel):
 
 # 书籍 数据表
 class Book(DictModel):
-    authors = models.CharField(max_length=100, blank=True, null=True)  # 作者
-    summary = models.CharField(max_length=1000, null=True)  # 摘要
+    authors = models.CharField(max_length=100, blank=True)  # 作者
+    summary = models.CharField(max_length=1000, blank=True)  # 摘要
     content = models.TextField(null=True)  # 文本内容 如果没有章节 则直接存储文本内容
     chapter_count = models.IntegerField(default=0)  # 章节数
 
@@ -121,7 +126,7 @@ class Chapter(BaseModel):
     book = models.ForeignKey(Book, models.DO_NOTHING)
     order_num = models.IntegerField(default=0, auto_created=True, db_index=True)  # 排序号
     content = models.TextField(null=True)  # 文本内容 如果没有章节 则直接存储文本内容
-    remarks = models.CharField(max_length=2000, null=True)  # 翻译描述
+    remarks = models.CharField(max_length=2000, blank=True)  # 翻译描述
 
     class Meta:
         db_table = "data_chapter"
@@ -138,9 +143,9 @@ class SettingNovel(DictModel):
 
 # 人物设定表
 class SettingPerson(DictModel):
-    novel = models.ForeignKey(SettingNovel, models.DO_NOTHING, blank=True, null=True)
-    appearance = models.CharField(max_length=1000, null=True)  # 外貌描述
-    character = models.CharField(max_length=1000, null=True)  # 性格描述
+    novel = models.ForeignKey(SettingNovel, models.DO_NOTHING, blank=True)
+    appearance = models.CharField(max_length=1000, blank=True)  # 外貌描述
+    character = models.CharField(max_length=1000, blank=True)  # 性格描述
     age = models.IntegerField(default=0);  # 年龄
     sex = models.IntegerField(default=0);  # 1 男， 2 女
 
@@ -151,7 +156,7 @@ class SettingPerson(DictModel):
 
 # 其他设定表
 class SettingOther(DictModel):
-    novel = models.ForeignKey(SettingNovel, models.DO_NOTHING, blank=True, null=True)
+    novel = models.ForeignKey(SettingNovel, models.DO_NOTHING, blank=True)
 
     class Meta:
         db_table = "setting_other"
