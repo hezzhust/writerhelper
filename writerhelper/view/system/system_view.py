@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 
 from .froms import UserForm
 
+register_path = "system/register.html"
 
 # 注册
 @csrf_exempt
@@ -19,14 +20,21 @@ def register_view(req):
             # 获得表单数据
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
+            password_check = form.cleaned_data['password_check']
+            email = form.cleaned_data['email']
+            context['username'] = username
+            #判断密码是否一致
+            if password != password_check:
+                context['passwordDifference'] = True
+                return render(req, register_path, context)
 
             # 判断用户是否存在
             user = auth.authenticate(username=username, password=password)
             if user:
                 context['userExit'] = True
-                return render(req, 'register.html', context)
+                return render(req, register_path, context)
             # 添加到数据库（还可以加一些字段的处理）
-            user = User.objects.create_user(username=username, password=password)
+            user = User.objects.create_user(username=username, password=password, email = email)
             user.save()
 
             # 添加到session
@@ -37,8 +45,9 @@ def register_view(req):
 
     else:
         context = {'isLogin': False}
+        context['passwordDifference'] = False
     # 将req 、页面 、以及context{}（要传入html文件中的内容包含在字典里）返回
-    return render(req, 'register.html', context)
+    return render(req, register_path, context)
 # 登入
 @csrf_exempt
 def login_view(req):

@@ -3,13 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>用户注册页面</title>
+    <script type="text/javascript">
+        function display_alert() {
+            alert("I am an alert box!!")
+        }
+    </script>
 </head>
 <body>
-<form action="{% url 'register' %}" method="post" accept-charset="utf-8"enctype="multipart/form-data" >
-   {% csrf_token %}
-   <input type="text" name="username"id="username" placeholder="请输入手机号" >
-   <input type="password"  name="password" id="password" placeholder="请输入6-12位密码" >
-   <input type="submit" class="submit" value="立即注册">
- </form>
+<form action="{% url 'register' %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="text" name="username" id="username" placeholder="请输入用户名/手机号">
+    <input type="password" name="password" id="password" placeholder="请输入6-12位密码">
+    <input type="password" name="password_check" id="password_check" placeholder="请输入重复密码">
+    <input type="text" name="email" id="email" placeholder="请输入邮箱">
+    <input type="submit" class="submit" value="立即注册">
+</form>
+    {% if passwordDifference %}
+         <p>两次输入的密码不一致，请重新输入</p>
+    {% endif %}
+    {% if userExit %}
+         <p>{{ username }}用户名已经注册过</p>
+    {% endif %}
 </body>
 </html>
