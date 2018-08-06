@@ -77,13 +77,19 @@ WSGI_APPLICATION = 'writerhelper.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'writer_helper',
+        # 'USER': 'hezz',
+        # 'PASSWORD': 'hzz1988518',
+        # 'HOST': '127.0.0.1',
+        # 'PORT': '3306',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'writer_helper',
         'USER': 'hezz',
         'PASSWORD': 'hzz1988518',
         'HOST': '127.0.0.1',
-        'PORT': '3306',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'PORT': '5432',
     }
 }
 
