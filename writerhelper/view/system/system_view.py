@@ -8,7 +8,9 @@ from django.contrib.auth.decorators import login_required
 
 from .froms import UserForm
 
+home_path = "home.html"
 register_path = "system/register.html"
+login_path = "system/login.html"
 
 # 注册
 @csrf_exempt
@@ -64,14 +66,14 @@ def login_view(req):
                 # 比较成功，跳转index
                 auth.login(req, user)
                 req.session['username'] = username
-                return redirect('hellow.html')
+                return redirect(home_path)
             else:
                 # 比较失败，还在login
                 context = {'isLogin': False, 'pawd': False}
-                return render(req, 'login.html', context)
+                return render(req, login_path, context)
     else:
         context = {'isLogin': False, 'pswd': True}
-    return render(req, 'login.html', context)
+    return render(req, login_path, context)
 
 
 # 登出

@@ -21,16 +21,19 @@ from .view.test import ajaxtest
 from .view.bootstrap import dashboard
 from .view.writer import writer_view
 from .view.system import system_view
+from .view import home_view
 
+app_name = 'writerhelper'
 urlpatterns = [
-    url(r'^$', ajaxtest.index),
-    url(r'^admin/', admin.site.urls),
-    url(r'^hello/', writer_view.saveBook),
-    url(r'^index/', writer_view.saveBook),
-    url(r'^ajaxtest/', ajaxtest.index),
-    url(r'^dashboard/index', dashboard.index),
-    url(r'^aaa/$', ajaxctr.aaa),
-    url(r'^login$', system_view.login_view, name='login'),
+    # url(r'^$', ajaxtest.index),
+    # url(r'^admin/', admin.site.urls),
+    # url(r'^hello/', writer_view.saveBook),
+    # url(r'^index/', writer_view.saveBook),
+    # url(r'^ajaxtest/', ajaxtest.index),
+    # url(r'^dashboard/index', dashboard.index),
+    # url(r'^aaa/$', ajaxctr.aaa),
+    url(r'^home', home_view.index),
+    url(r'^login', system_view.login_view, name='login'),
     url(r'^logout', system_view.logout_view),
     url(r'^register$', system_view.register_view, name='register'),
 ]
