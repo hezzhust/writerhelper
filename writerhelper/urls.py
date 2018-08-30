@@ -26,13 +26,14 @@ from .view import home_view
 app_name = 'writerhelper'
 urlpatterns = [
     # url(r'^$', ajaxtest.index),
-    # url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls),
     # url(r'^hello/', writer_view.saveBook),
     # url(r'^index/', writer_view.saveBook),
     # url(r'^ajaxtest/', ajaxtest.index),
     # url(r'^dashboard/index', dashboard.index),
     # url(r'^aaa/$', ajaxctr.aaa),
-    url(r'^home', home_view.index),
+    url(r'^home/$', home_view.index),
+    url(r'^home/getBookList', home_view.query_book_List),
     url(r'^login', system_view.login_view, name='login'),
     url(r'^logout', system_view.logout_view),
     url(r'^register$', system_view.register_view, name='register'),
