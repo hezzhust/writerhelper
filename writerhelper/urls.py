@@ -34,6 +34,7 @@ urlpatterns = [
     # url(r'^aaa/$', ajaxctr.aaa),
     url(r'^home/$', home_view.index),
     url(r'^home/getBookList', home_view.query_book_List),
+    url(r'^home/saveBook', home_view.save_book),
     url(r'^login', system_view.login_view, name='login'),
     url(r'^logout', system_view.logout_view),
     url(r'^register$', system_view.register_view, name='register'),

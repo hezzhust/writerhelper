@@ -1,15 +1,22 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+import uuid
+
+
+
 from django.db import models
 import datetime
 
 
+
+
 # Create your models here.
 class BaseModel(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=400, db_index=True)  # 名称  , 指定 db_index=True
-    create_time = models.DateTimeField(default=datetime.datetime.now, db_index=True)
-    modify_time = models.DateTimeField(default=datetime.datetime.now, blank=True, null=True)
+    create_time = models.DateTimeField(default=datetime.datetime.now(), db_index=True)
+    modify_time = models.DateTimeField(default=datetime.datetime.now(), blank=True, null=True)
     status = models.IntegerField(default=0)  # 0-隐藏，1-发布，-1删除
     ops_user_id = models.CharField(max_length=50, blank=True, null=True)  # 操作员id
 
@@ -118,7 +125,7 @@ class Book(DictModel):
     authors = models.CharField(max_length=100, blank=True, null=True)  # 作者
     summary = models.CharField(max_length=1000, null=True)  # 摘要
     content = models.TextField(null=True)  # 文本内容 如果没有章节 则直接存储文本内容
-    chapter_count = models.IntegerField(default=0)  # 章节数
+    chapter_count = models.IntegerField(default=0, blank=True, null=True)  # 章节数
 
     class Meta:
         db_table = "data_book"

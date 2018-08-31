@@ -84,7 +84,8 @@
                         </div>
 
                         <div id="toolbar" class="btn-group">
-                            <button id="btn_add" type="button" class="btn btn-default">
+                            <button id="btn_add" type="button" class="btn btn-default" data-toggle="modal"
+                                    href="#modal-container-add">
                                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
                             </button>
                             <button id="btn_edit" type="button" class="btn btn-default">
@@ -94,7 +95,40 @@
                                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
                             </button>
                         </div>
+
+                        <div id="modal-container-add" class="modal fade" tabindex="-1" role="dialog"
+                             aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-hidden="true">
+                                            ×
+                                        </button>
+                                        <h3 id="myModalLabel">
+                                            标题栏
+                                        </h3>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            {% csrf_token %}
+                                             <input type="text" id="book_id_text" class="hidden"/>
+                                             <p><label>书名: </label><input type="text" id="book_name_text"/></p>
+                                             <p><label>作者: </label><input type="text" id="author_text"/></p>
+                                             <p><label>章节数: </label><input type="text" id="count_text"/></p>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn" data-dismiss="modal" aria-hidden="true">取消
+                                        </button>
+                                        <button class="btn btn-primary" type="button" id="btn_save_book" data-dismiss="modal" >保存</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <table id="tb_books"></table>
+
                     </div>
                 </div>
             </div>

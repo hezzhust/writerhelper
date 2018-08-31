@@ -10,6 +10,19 @@ $(function () {
     var oButtonInit = new ButtonInit();
     oButtonInit.Init();
 
+/*    alert('iii');
+    $("#btn_edit").click(function () {
+        alert("hello1");
+        $.ajax({
+            type: "POST",
+            url: "/aaa/",
+            data: {name: c},
+            dataType: "json",
+            success: function (data) {
+                $("#p").text(data.msg + data.code)
+            }
+        });
+    });*/
 });
 
 var TableInit = function () {
@@ -100,12 +113,29 @@ var ButtonInit = function () {
     var postdata = {};
 
     oInit.Init = function () {
-        $("#btn_add").click(function () {
-           $("#myModalLabel").text("新增");
-           $("#myModal").find(".form-control").val("");
-           $('#myModal').modal()
+        $("#btn_save_book").click(function () {
 
-           postdata.DEPARTMENT_ID = "";
+            book_name=$("#book_name_text").val();
+            authors=$("#author_text").val();
+            chapter_count=$("#count_text").val();
+            id = $("#book_id_text").val();
+            $.ajax({
+                type: "POST",
+                url: "/home/saveBook",
+                data: {'name': book_name,
+                'authors':authors,
+                'chapter_count':chapter_count,
+                'id':id},
+                dataType: "json",
+                success: function (data) {
+                    // $("#p").text(data.msg + data.code)
+                    if(1==data.code)
+                        alert('保存成功！');
+                    else
+                        alert('保存失败！');
+                    $("#tb_books").bootstrapTable('refresh');
+                }
+            });
         });
 
         //$("#btn_edit").click(function () {
@@ -188,7 +218,7 @@ var ButtonInit = function () {
         //});
 
         $("#btn_query").click(function () {
-           $("#tb_books").bootstrapTable('refresh');
+            $("#tb_books").bootstrapTable('refresh');
         });
     };
 
