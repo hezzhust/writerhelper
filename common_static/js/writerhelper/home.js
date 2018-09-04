@@ -10,27 +10,66 @@ $(function () {
     var oButtonInit = new ButtonInit();
     oButtonInit.Init();
 
-/*    alert('iii');
-    $("#btn_edit").click(function () {
-        alert("hello1");
-        $.ajax({
-            type: "POST",
-            url: "/aaa/",
-            data: {name: c},
-            dataType: "json",
-            success: function (data) {
-                $("#p").text(data.msg + data.code)
-            }
-        });
-    });*/
+    /*    alert('iii');
+     $("#btn_edit").click(function () {
+     alert("hello1");
+     $.ajax({
+     type: "POST",
+     url: "/aaa/",
+     data: {name: c},
+     dataType: "json",
+     success: function (data) {
+     $("#p").text(data.msg + data.code)
+     }
+     });
+     });*/
 });
+
+function editBook(id) {
+
+    alert(id);
+    $.ajax({
+        type: "POST",
+        url: "/home/get_book_detail",
+        data: {
+            'id': id
+        },
+        dataType: "json",
+        success: function (data) {
+            // $("#p").text(data.msg + data.code)
+            if (1 == data.code) {
+                alert(data.msg);
+                alert(data.data['name']);
+                $("#book_name_text").val(data.data['name']);
+                $("#author_text").val(data.data['authors']);
+                $("#count_text").val(data.data['chapter_count']);
+                $('#modal-container-add').modal();
+            } else {
+                alert(data.msg);
+            }
+            // $("#tb_books").bootstrapTable('refresh');
+        }
+    });
+}
+
+function deleteBook() {
+    
+}
+
+function objToStr(obj) {
+    str = "";
+    for (var i in obj) {
+        str += obj[i];
+    }
+    return str;
+}
 
 var TableInit = function () {
     var oTableInit = new Object();
     //初始化Table
     oTableInit.Init = function () {
         $('#tb_books').bootstrapTable({
-            url: '/home/getBookList',         //请求后台的URL（*）
+            url: '/home/get_book_list',         //请求后台的URL（*）
             method: 'post',                      //请求方式（*）
             // data:"data",                         //取的数据字段名
             contentType: "application/x-www-form-urlencoded; charset=UTF-8", // 默认是：'application/json'， 不改的话，后台获取不到数据！ ###### 非常重要！！######
@@ -52,7 +91,7 @@ var TableInit = function () {
             minimumCountColumns: 2,             //最少允许的列数
             clickToSelect: true,                //是否启用点击选中行
             height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-            uniqueId: "book_id",                     //每一行的唯一标识，一般为主键列
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
             showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
             cardView: false,                    //是否显示详细视图
             detailView: false,                   //是否显示父子表
@@ -87,10 +126,16 @@ var TableInit = function () {
                 title: '操作',
                 valign: 'middle',
                 align: 'left',
-                halign: 'center'
+                halign: 'center',
+                formatter: function (value, row, index) {
+                    var e1 = '<a   onclick="editBook( \'' + row.id + '\')">编辑</a> ';
+                    var e2 = '<a   onclick="deleteBook( \'' + row.id + '\')">删除</a> ';
+                    return [e1, e2].join('');
+                }
             },]
         });
     };
+
 
     //得到查询的参数
     oTableInit.queryParams = function (params) {
@@ -115,21 +160,23 @@ var ButtonInit = function () {
     oInit.Init = function () {
         $("#btn_save_book").click(function () {
 
-            book_name=$("#book_name_text").val();
-            authors=$("#author_text").val();
-            chapter_count=$("#count_text").val();
+            book_name = $("#book_name_text").val();
+            authors = $("#author_text").val();
+            chapter_count = $("#count_text").val();
             id = $("#book_id_text").val();
             $.ajax({
                 type: "POST",
-                url: "/home/saveBook",
-                data: {'name': book_name,
-                'authors':authors,
-                'chapter_count':chapter_count,
-                'id':id},
+                url: "/home/save_book",
+                data: {
+                    'name': book_name,
+                    'authors': authors,
+                    'chapter_count': chapter_count,
+                    'id': id
+                },
                 dataType: "json",
                 success: function (data) {
                     // $("#p").text(data.msg + data.code)
-                    if(1==data.code)
+                    if (1 == data.code)
                         alert('保存成功！');
                     else
                         alert('保存失败！');

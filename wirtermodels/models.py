@@ -6,7 +6,8 @@ import uuid
 
 
 from django.db import models
-import datetime
+from django.utils import timezone
+# import datetime
 
 
 
@@ -15,18 +16,20 @@ import datetime
 class BaseModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=400, db_index=True)  # 名称  , 指定 db_index=True
-    create_time = models.DateTimeField(default=datetime.datetime.now(), db_index=True)
-    modify_time = models.DateTimeField(default=datetime.datetime.now(), blank=True, null=True)
+    create_time = models.DateTimeField(default=timezone.now(), db_index=True)
+    modify_time = models.DateTimeField(default=timezone.now(), blank=True, null=True)
     status = models.IntegerField(default=0)  # 0-隐藏，1-发布，-1删除
     ops_user_id = models.CharField(max_length=50, blank=True, null=True)  # 操作员id
 
     def __unicode__(self):
         # return self.name, self.create_time, self.modify_time, self.status, self.ops_user_id
-        return self.name, self.create_time
+        return self.name
 
         # 将属性和属性值转换成dict 列表生成式
     def toDict(self):
-        return dict([(attr, getattr(self, attr)) for attr in [f.name for f in self._meta.fields]])  # type(self._meta.fields).__name__
+        result = dict([(attr, getattr(self, attr)) for attr in [f.name for f in self._meta.fields]])  # type(self._meta.fields).__name__
+        result['id'] = str(self.id) # 对uuid 做转换
+        return result
     class Meta:
         abstract = True
 
@@ -129,7 +132,7 @@ class Book(DictModel):
 
     class Meta:
         db_table = "data_book"
-        ordering = ['name']
+        ordering = ['-create_time']
 
 # 章节 数据表
 class Chapter(BaseModel):
