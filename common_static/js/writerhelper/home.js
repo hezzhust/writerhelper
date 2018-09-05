@@ -26,11 +26,10 @@ $(function () {
 });
 
 function editBook(id) {
-
-    alert(id);
     $.ajax({
         type: "POST",
-        url: "/home/get_book_detail",
+        url: "get_book_detail",
+        // url: "/home/get_book_detail",
         data: {
             'id': id
         },
@@ -38,22 +37,40 @@ function editBook(id) {
         success: function (data) {
             // $("#p").text(data.msg + data.code)
             if (1 == data.code) {
-                alert(data.msg);
-                alert(data.data['name']);
                 $("#book_name_text").val(data.data['name']);
                 $("#author_text").val(data.data['authors']);
                 $("#count_text").val(data.data['chapter_count']);
+                $("#book_id_text").val(data.data['id']);
                 $('#modal-container-add').modal();
             } else {
-                alert(data.msg);
+                toastr.warning(data.msg);
             }
             // $("#tb_books").bootstrapTable('refresh');
         }
     });
 }
 
-function deleteBook() {
-    
+function deleteBook(id) {
+    if (id == null || id == '' || id == "")
+        return;
+
+    $.ajax({
+        type: "POST",
+        url: "delete_book",
+        // url: "/home/delete_book",
+        data: {
+            'id': id
+        },
+        dataType: "json",
+        success: function (data) {
+            if (1 == data.code) {
+                toastr.success('删除成功!');
+            } else {
+                toastr.warning(data.msg);
+            }
+            $("#tb_books").bootstrapTable('refresh');
+        }
+    });
 }
 
 function objToStr(obj) {
@@ -69,7 +86,8 @@ var TableInit = function () {
     //初始化Table
     oTableInit.Init = function () {
         $('#tb_books').bootstrapTable({
-            url: '/home/get_book_list',         //请求后台的URL（*）
+            url: 'get_book_list',         //请求后台的URL（*）
+            // url: '/home/get_book_list',         //请求后台的URL（*）
             method: 'post',                      //请求方式（*）
             // data:"data",                         //取的数据字段名
             contentType: "application/x-www-form-urlencoded; charset=UTF-8", // 默认是：'application/json'， 不改的话，后台获取不到数据！ ###### 非常重要！！######
@@ -166,7 +184,8 @@ var ButtonInit = function () {
             id = $("#book_id_text").val();
             $.ajax({
                 type: "POST",
-                url: "/home/save_book",
+                url: "save_book",
+                // url: "/home/save_book",
                 data: {
                     'name': book_name,
                     'authors': authors,
@@ -176,10 +195,11 @@ var ButtonInit = function () {
                 dataType: "json",
                 success: function (data) {
                     // $("#p").text(data.msg + data.code)
-                    if (1 == data.code)
-                        alert('保存成功！');
-                    else
-                        alert('保存失败！');
+                    if (1 == data.code) {
+                        toastr.success(data.msg);
+                    } else {
+                        toastr.warning(data.msg);
+                    }
                     $("#tb_books").bootstrapTable('refresh');
                 }
             });
@@ -207,37 +227,48 @@ var ButtonInit = function () {
         //    $('#myModal').modal();
         //});
 
-        //$("#btn_delete").click(function () {
-        //    var arrselections = $("#tb_departments").bootstrapTable('getSelections');
-        //    if (arrselections.length <= 0) {
-        //        toastr.warning('请选择有效数据');
-        //        return;
-        //    }
+        $("#btn_delete").click(function () {
+            var arrselections = $("#tb_books").bootstrapTable('getSelections');
+            // toastr.success('已选择！' + arrselections.length + '数据');
+            if (arrselections.length <= 0) {
+                toastr.warning('请选择有效数据！');
+                return;
+            }
+            Ewin.confirm({message: "确认要删除选择的数据吗？"}).on(function (e) {
+                if (!e) {
+                    return;
+                }
+                // var args = JSON.stringify(arrselections);
+                // alert(args);
+                var ids = [];
+                for (var i = 0; i < arrselections.length; i++) {
+                    ids.push(arrselections[i]['id']);
+                }
+                $.ajax({
+                    type: "post",
+                    url: "batch_delete_book",
+                    // url: "/home/batch_delete_book",
+                    data: {"ids": ids},
+                    dataType: "json",
+                    success: function (data) {
+                        if (1 == data.code) {
+                            toastr.success(data.msg);
+                        } else {
+                            toastr.warning(data.msg);
+                        }
+                        $("#tb_books").bootstrapTable('refresh');
+                    },
+                    error: function () {
+                        toastr.error('Error');
+                        //清除当前的列表  toastr.clear()
+                    }
+                    // complete: function () {
+                    //
+                    // }
 
-        //    Ewin.confirm({ message: "确认要删除选择的数据吗？" }).on(function (e) {
-        //        if (!e) {
-        //            return;
-        //        }
-        //        $.ajax({
-        //            type: "post",
-        //            url: "/Home/Delete",
-        //            data: { "": JSON.stringify(arrselections) },
-        //            success: function (data, status) {
-        //                if (status == "success") {
-        //                    toastr.success('提交数据成功');
-        //                    $("#tb_departments").bootstrapTable('refresh');
-        //                }
-        //            },
-        //            error: function () {
-        //                toastr.error('Error');
-        //            },
-        //            complete: function () {
-
-        //            }
-
-        //        });
-        //    });
-        //});
+                });
+            });
+        });
 
         //$("#btn_submit").click(function () {
         //    postdata.DEPARTMENT_NAME = $("#txt_departmentname").val();

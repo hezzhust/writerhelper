@@ -7,9 +7,9 @@ django.setup()
 # Create your tests here.
 
 def saveBook():
-    from models import BookInfo
+    from models import Book
 
-    book = BookInfo (name="《三体》")
+    book = Book (name="《三体》")
     book.save()
 
 if __name__=="__main__":

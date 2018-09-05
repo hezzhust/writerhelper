@@ -25,6 +25,13 @@ def index(request):
     return render(request, 'home.html', context)
 
 @csrf_exempt
+def batch_delete_book(request):
+    ids = request.POST.getlist('ids[]')
+    if ids:
+        Book.objects.filter(id__in=ids).update(status = -1)
+    return HttpResponse(json.dumps({"msg": '删除成功!',"code": 1}))
+
+@csrf_exempt
 def delete_book(request):
     id = request.POST.get('id')
     if id:
@@ -109,7 +116,7 @@ def query_books_from_db(params):
         result = result.filter(create_time__gte= starttime)
     if endtime:
         result = result.filter(create_time__gte= starttime)
-    result.filter(status__gt=-1)
+    result = result.filter(status__gt=-1)
     count = result.count()
     if ordername:
         if order == 'desc':
