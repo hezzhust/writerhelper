@@ -205,31 +205,21 @@ var ButtonInit = function () {
             });
         });
 
-        //$("#btn_edit").click(function () {
-        //    var arrselections = $("#tb_departments").bootstrapTable('getSelections');
-        //    if (arrselections.length > 1) {
-        //        toastr.warning('只能选择一行进行编辑');
-
-        //        return;
-        //    }
-        //    if (arrselections.length <= 0) {
-        //        toastr.warning('请选择有效数据');
-
-        //        return;
-        //    }
-        //    $("#myModalLabel").text("编辑");
-        //    $("#txt_departmentname").val(arrselections[0].DEPARTMENT_NAME);
-        //    $("#txt_parentdepartment").val(arrselections[0].PARENT_ID);
-        //    $("#txt_departmentlevel").val(arrselections[0].DEPARTMENT_LEVEL);
-        //    $("#txt_statu").val(arrselections[0].STATUS);
-
-        //    postdata.DEPARTMENT_ID = arrselections[0].DEPARTMENT_ID;
-        //    $('#myModal').modal();
-        //});
+        $("#btn_edit").click(function () {
+           var arrselections = $("#tb_books").bootstrapTable('getSelections');
+           if (arrselections.length > 1) {
+               toastr.warning('只能选择一行进行编辑');
+               return;
+           }
+           if (arrselections.length <= 0) {
+               toastr.warning('请选择有效数据');
+               return;
+           }
+           editBook(arrselections[0]['id']);
+        });
 
         $("#btn_delete").click(function () {
             var arrselections = $("#tb_books").bootstrapTable('getSelections');
-            // toastr.success('已选择！' + arrselections.length + '数据');
             if (arrselections.length <= 0) {
                 toastr.warning('请选择有效数据！');
                 return;
@@ -269,31 +259,6 @@ var ButtonInit = function () {
                 });
             });
         });
-
-        //$("#btn_submit").click(function () {
-        //    postdata.DEPARTMENT_NAME = $("#txt_departmentname").val();
-        //    postdata.PARENT_ID = $("#txt_parentdepartment").val();
-        //    postdata.DEPARTMENT_LEVEL = $("#txt_departmentlevel").val();
-        //    postdata.STATUS = $("#txt_statu").val();
-        //    $.ajax({
-        //        type: "post",
-        //        url: "/Home/GetEdit",
-        //        data: { "": JSON.stringify(postdata) },
-        //        success: function (data, status) {
-        //            if (status == "success") {
-        //                toastr.success('提交数据成功');
-        //                $("#tb_departments").bootstrapTable('refresh');
-        //            }
-        //        },
-        //        error: function () {
-        //            toastr.error('Error');
-        //        },
-        //        complete: function () {
-
-        //        }
-
-        //    });
-        //});
 
         $("#btn_query").click(function () {
             $("#tb_books").bootstrapTable('refresh');
