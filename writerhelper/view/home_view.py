@@ -15,7 +15,7 @@ import pytz
 import json
 
 
-tzone = pytz.timezone(settings.TIME_ZONE)
+# tzone = pytz.timezone(settings.TIME_ZONE)
 
 
 def index(request):
@@ -50,9 +50,9 @@ def get_book_detail(request):
             dict = book.toDict()
             # dict['id'] = str(book.id)
             if book.create_time:
-                dict['create_time'] = book.create_time.strftime("%Y-%m-%d %H:%M %Z")
+                dict['create_time'] = book.create_time.astimezone(timezone.get_current_timezone()).strftime("%Y-%m-%d %H:%M %Z")
             if book.modify_time:
-                dict['modify_time'] = book.modify_time.strftime("%Y-%m-%d %H:%M %Z")
+                dict['modify_time'] = book.modify_time.astimezone(timezone.get_current_timezone()).strftime("%Y-%m-%d %H:%M %Z")
             return HttpResponse(json.dumps({"msg": '查询成功','data':dict, "code": 1}))
     return HttpResponse(json.dumps({"msg": '查询失败',"code": -1}))
     pass
@@ -91,9 +91,9 @@ def query_book_list(request):
         dict = book.toDict()
         # dict['id'] = str(book.id)
         if book.create_time:
-            dict['create_time'] = book.create_time.astimezone(tzone).strftime("%Y-%m-%d %H:%M %Z")
+            dict['create_time'] = book.create_time.astimezone(timezone.get_current_timezone()).strftime("%Y-%m-%d %H:%M %Z")
         if book.modify_time:
-            dict['modify_time'] = book.modify_time.astimezone(tzone).strftime("%Y-%m-%d %H:%M %Z")
+            dict['modify_time'] = book.modify_time.astimezone(timezone.get_current_timezone()).strftime("%Y-%m-%d %H:%M %Z")
         returnData["rows"].append(dict)
     return HttpResponse(json.dumps(returnData, default=json_util.default))
 

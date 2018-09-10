@@ -7,7 +7,7 @@ import uuid
 
 from django.db import models
 from django.utils import timezone
-# import datetime
+import datetime
 
 
 
@@ -16,8 +16,10 @@ from django.utils import timezone
 class BaseModel(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=400, db_index=True)  # 名称  , 指定 db_index=True
-    create_time = models.DateTimeField(default=timezone.now(), db_index=True)
-    modify_time = models.DateTimeField(default=timezone.now(), blank=True, null=True)
+    # create_time = models.DateTimeField(default=timezone.now(), db_index=True)
+    create_time = models.DateTimeField(default=datetime.datetime.now(), db_index=True)
+    # modify_time = models.DateTimeField(default=timezone.now(), blank=True, null=True)
+    modify_time = models.DateTimeField(default=datetime.datetime.now(), blank=True, null=True)
     status = models.IntegerField(default=0)  # 0-隐藏，1-发布，-1删除
     ops_user_id = models.CharField(max_length=50, blank=True, null=True)  # 操作员id
 
