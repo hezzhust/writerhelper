@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block mainbody %}
-    <script src="/static/js/writerhelper/home.js"></script>
+
 
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -61,21 +61,37 @@
                                 <form id="formSearch" class="form-horizontal">
                                     {% csrf_token %}
                                     <div class="form-group" style="margin-top:15px">
-                                        <label class="control-label col-sm-1"
-                                               for="txt_search_book_name">书名</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" id="txt_search_book_name">
+                                        <div class="row">
+                                            <label class="control-label col-sm-1"
+                                                   for="txt_search_book_name">书名</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" id="txt_search_book_name">
+                                            </div>
+                                            <label class="control-label col-sm-1" for="txt_search_author">作者名</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" id="txt_search_author">
+                                            </div>
                                         </div>
-                                        <label class="control-label col-sm-1" for="txt_search_author">作者名</label>
-                                        <div class="col-sm-3">
-                                            <input type="text" class="form-control" id="txt_search_author">
+                                        <br/>
+                                        <div class="row">
+                                            <label class="control-label col-sm-1"
+                                                   for="search_start_time">开始时间</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" id="search_start_time">
+                                            </div>
+                                            <label class="control-label col-sm-1" for="search_end_time">结束时间</label>
+                                            <div class="col-sm-3">
+                                                <input type="text" class="form-control" id="search_end_time">
+                                            </div>
+                                            <div class="col-sm-4" style="text-align:left;">
+                                                <button type="button" style="margin-left:50px" id="btn_query"
+                                                        class="btn btn-primary">查询
+                                                </button>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-4" style="text-align:left;">
-                                            <button type="button" style="margin-left:50px" id="btn_query"
-                                                    class="btn btn-primary">查询
-                                            </button>
-                                        </div>
+
                                     </div>
+
                                 </form>
                             </div>
                         </div>
@@ -109,16 +125,18 @@
                                     <div class="modal-body">
                                         <form>
                                             {% csrf_token %}
-                                             <input type="text" id="book_id_text" class="hidden"/>
-                                             <p><label>书名: </label><input type="text" id="book_name_text"/></p>
-                                             <p><label>作者: </label><input type="text" id="author_text"/></p>
-                                             <p><label>章节数: </label><input type="text" id="count_text"/></p>
+                                            <input type="text" id="book_id_text" class="hidden"/>
+                                            <p><label>书名: </label><input type="text" id="book_name_text"/></p>
+                                            <p><label>作者: </label><input type="text" id="author_text"/></p>
+                                            <p><label>章节数: </label><input type="text" id="count_text"/></p>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
                                         <button class="btn" data-dismiss="modal" aria-hidden="true">取消
                                         </button>
-                                        <button class="btn btn-primary" type="button" id="btn_save_book" data-dismiss="modal" >保存</button>
+                                        <button class="btn btn-primary" type="button" id="btn_save_book"
+                                                data-dismiss="modal">保存
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -131,4 +149,6 @@
             </div>
         </div>
     </div>
+
+    <script src="/static/js/writerhelper/home.js"></script>
 {% endblock %}

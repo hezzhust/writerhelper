@@ -19,17 +19,19 @@ import json
 
 
 def index(request):
-    context ={}
+    context = {}
     context['title'] = '首页'
     context['section_title'] = '欢迎使用写作助手！'
     return render(request, 'home.html', context)
+
 
 @csrf_exempt
 def batch_delete_book(request):
     ids = request.POST.getlist('ids[]')
     if ids:
-        Book.objects.filter(id__in=ids).update(status = -1)
-    return HttpResponse(json.dumps({"msg": '删除成功!',"code": 1}))
+        Book.objects.filter(id__in=ids).update(status=-1)
+    return HttpResponse(json.dumps({"msg": '删除成功!', "code": 1}))
+
 
 @csrf_exempt
 def delete_book(request):
@@ -38,23 +40,25 @@ def delete_book(request):
         book = Book.objects.get(id=id)
         book.status = -1
         book.save()
-    return HttpResponse(json.dumps({"msg": '删除成功',"code": 1}))
+    return HttpResponse(json.dumps({"msg": '删除成功', "code": 1}))
 
 
 @csrf_exempt
 def get_book_detail(request):
     id = request.POST.get('id')
     if id:
-        book = Book.objects.get(id = id)
+        book = Book.objects.get(id=id)
         if book:
             dict = book.toDict()
             # dict['id'] = str(book.id)
             if book.create_time:
-                dict['create_time'] = book.create_time.astimezone(timezone.get_current_timezone()).strftime("%Y-%m-%d %H:%M %Z")
+                dict['create_time'] = book.create_time.astimezone(timezone.get_current_timezone()).strftime(
+                    "%Y-%m-%d %H:%M %Z")
             if book.modify_time:
-                dict['modify_time'] = book.modify_time.astimezone(timezone.get_current_timezone()).strftime("%Y-%m-%d %H:%M %Z")
-            return HttpResponse(json.dumps({"msg": '查询成功','data':dict, "code": 1}))
-    return HttpResponse(json.dumps({"msg": '查询失败',"code": -1}))
+                dict['modify_time'] = book.modify_time.astimezone(timezone.get_current_timezone()).strftime(
+                    "%Y-%m-%d %H:%M %Z")
+            return HttpResponse(json.dumps({"msg": '查询成功', 'data': dict, "code": 1}))
+    return HttpResponse(json.dumps({"msg": '查询失败', "code": -1}))
     pass
 
 
@@ -66,7 +70,7 @@ def save_book(request):
     chapter_count = args.get('chapter_count')
     name = args.get('name')
     if id:
-        book = Book.objects.get(id = id)
+        book = Book.objects.get(id=id)
     else:
         book = Book()
         book.create_time = timezone.now()
@@ -77,8 +81,7 @@ def save_book(request):
     book.name = name
     book.save()
     book.refresh_from_db()
-    return HttpResponse(json.dumps({"msg": '保存成功','id':str(book.id), "code": 1}))
-
+    return HttpResponse(json.dumps({"msg": '保存成功', 'id': str(book.id), "code": 1}))
 
 
 # 获取书籍列表
@@ -91,9 +94,11 @@ def query_book_list(request):
         dict = book.toDict()
         # dict['id'] = str(book.id)
         if book.create_time:
-            dict['create_time'] = book.create_time.astimezone(timezone.get_current_timezone()).strftime("%Y-%m-%d %H:%M %Z")
+            dict['create_time'] = book.create_time.astimezone(timezone.get_current_timezone()).strftime(
+                "%Y-%m-%d %H:%M %Z")
         if book.modify_time:
-            dict['modify_time'] = book.modify_time.astimezone(timezone.get_current_timezone()).strftime("%Y-%m-%d %H:%M %Z")
+            dict['modify_time'] = book.modify_time.astimezone(timezone.get_current_timezone()).strftime(
+                "%Y-%m-%d %H:%M %Z")
         returnData["rows"].append(dict)
     return HttpResponse(json.dumps(returnData, default=json_util.default))
 
@@ -113,13 +118,15 @@ def query_books_from_db(params):
     if author:
         result = result.filter(authors__contains=author)
     if starttime:
-        result = result.filter(create_time__gte= starttime)
+        _st = datetime.datetime.strptime(starttime, "%Y-%m-%d")
+        result = result.filter(create_time__gte=_st)
     if endtime:
-        result = result.filter(create_time__gte= starttime)
+        _et = datetime.datetime.strptime(endtime + ' 23:59:59', "%Y-%m-%d %H:%M:%S")
+        result = result.filter(create_time__lte=_et)
     result = result.filter(status__gt=-1)
     count = result.count()
     if ordername:
         if order == 'desc':
             ordername = "-" + ordername
         result = result.order_by(ordername)
-    return result[offset:offset+limit],count
+    return result[offset:offset + limit], count
