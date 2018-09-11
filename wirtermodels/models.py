@@ -22,6 +22,7 @@ class BaseModel(models.Model):
     modify_time = models.DateTimeField(default=datetime.datetime.now(), blank=True, null=True)
     status = models.IntegerField(default=0)  # 0-隐藏，1-发布，-1删除
     ops_user_id = models.CharField(max_length=50, blank=True, null=True)  # 操作员id
+    creator_id = models.CharField(max_length=50, blank=True, null=True)  # 创建人id
 
     def __unicode__(self):
         # return self.name, self.create_time, self.modify_time, self.status, self.ops_user_id

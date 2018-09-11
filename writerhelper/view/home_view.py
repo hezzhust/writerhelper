@@ -74,7 +74,9 @@ def save_book(request):
     else:
         book = Book()
         book.create_time = timezone.now()
+        book.creator_id = request.user.username
 
+    book.ops_user_id = request.user.username
     book.authors = authors
     book.chapter_count = chapter_count
     book.modify_time = timezone.now()

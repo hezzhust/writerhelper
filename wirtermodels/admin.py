@@ -46,6 +46,23 @@ class SettingNovelAdmin(admin.ModelAdmin):
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
+    # def save_model(self, request, obj, form, change):
+    #     """  重新定义此函数，提交时自动添加申请人和备案号  """
+    #     super(BookAdmin, self).save_model(request, obj, form, change)
+    def get_queryset(self, request):
+        """函数作用：使当前登录的用户只能看到自己负责的服务器"""
+        qs = super(BookAdmin, self).get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        return qs.filter(creator_id=request.user.username)
+
+    def get_readonly_fields(self, request, obj=None):
+        """  重新定义此函数，限制普通用户所能修改的字段  """
+        if request.user.is_superuser:
+            self.readonly_fields = []
+        return self.readonly_fields
+
+    readonly_fields = ('id', 'create_time', 'modify_time', 'ops_user_id', 'creator_id')
     # list_display设置要显示在列表中的字段
     list_display = ('id','name','create_time','status','authors','chapter_count')
     # list_per_page设置每页显示多少条记录，默认是100条
@@ -81,3 +98,6 @@ admin.site.register(Chapter)
 admin.site.register(SettingNovel, SettingNovelAdmin)
 admin.site.register(SettingPerson)
 admin.site.register(SettingOther)
+
+admin.site.site_header = '写作助手后台管理系统'
+admin.site.site_title = '写作神器'
