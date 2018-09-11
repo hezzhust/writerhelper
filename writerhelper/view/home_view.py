@@ -21,7 +21,7 @@ import json
 def index(request):
     context = {}
     context['title'] = '首页'
-    context['section_title'] = '欢迎使用写作助手！'
+    context['section_title'] = '欢迎使用！'
     return render(request, 'home.html', context)
 
 
