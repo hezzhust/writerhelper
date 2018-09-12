@@ -77,8 +77,24 @@ def login_view(req):
 
 
 # 登出
-@csrf_exempt
+
 def logout_view(req):
     # 清理cookie里保存username
     auth.logout(req)
     return redirect('/')
+
+
+
+# 权限校验
+def permission_validate(func):
+    # user = request.POST.user
+    def warpper(request, *args, **kwargs):
+        # FBV 不太清楚为什么要写两次u，可能是内部吧？如果是正常的装饰器应该一次就够了
+        user = request.user
+        username = request.session.get('username') #session中取数据
+        u = request.get_signed_cookie('username', salt='user', default=None) # cookie中取数据
+
+        if not u:
+            return render(request, 'login.html')
+        return func(request, *args, **kwargs)
+    return warpper

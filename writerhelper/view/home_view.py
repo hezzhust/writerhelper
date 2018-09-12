@@ -8,8 +8,10 @@ from django.conf import settings
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 
 from wirtermodels.models import Book
+from system.system_view import permission_validate
 
 import pytz
 import json
@@ -33,7 +35,7 @@ def batch_delete_book(request):
     return HttpResponse(json.dumps({"msg": '删除成功!', "code": 1}))
 
 
-@csrf_exempt
+
 def delete_book(request):
     id = request.POST.get('id')
     if id:
@@ -43,7 +45,7 @@ def delete_book(request):
     return HttpResponse(json.dumps({"msg": '删除成功', "code": 1}))
 
 
-@csrf_exempt
+
 def get_book_detail(request):
     id = request.POST.get('id')
     if id:
@@ -62,7 +64,8 @@ def get_book_detail(request):
     pass
 
 
-@csrf_exempt
+
+@permission_validate
 def save_book(request):
     args = request.POST
     id = args.get('id')
@@ -87,7 +90,6 @@ def save_book(request):
 
 
 # 获取书籍列表
-@csrf_exempt
 def query_book_list(request):
     returnData = {}
     returnData["rows"] = []

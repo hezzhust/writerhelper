@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'wirtermodels',
+    'myadmin',
 ]
 
 MIDDLEWARE = [
@@ -143,3 +144,5 @@ STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder"
 )
+
+# AUTHENTICATION_BACKENDS = ('django.contrib.auth.backends.ModelBackend',)

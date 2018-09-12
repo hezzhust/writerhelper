@@ -1,6 +1,22 @@
 /**
  * Created by hezz on 2018/8/30.
  */
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
 $(function () {
     //1.初始化Table
     var oTable = new TableInit();
@@ -23,6 +39,11 @@ $(function () {
      }
      });
      });*/
+
+
+    <!--获取csrftoken-->
+    var csrftoken = getCookie('csrftoken');
+
 });
 
 function editBook(id) {
@@ -163,9 +184,9 @@ var TableInit = function () {
             order: params.order,// 排序方式
             ordername: params.sort,//排序字段
             bookname: $("#txt_search_book_name").val(),
-            author: $("#txt_search_statu").val(),
-            starttime:$("#search_start_time").val(),
-            endtime:$("#search_end_time").val(),
+            author: $("#txt_search_author").val(),
+            starttime: $("#search_start_time").val(),
+            endtime: $("#search_end_time").val(),
         };
         return temp;
     };
@@ -272,46 +293,46 @@ var ButtonInit = function () {
 
 
 /*yyyy-mm-dd
-yyyy-mm-dd hh:ii
-yyyy-mm-ddThh:ii
-yyyy-mm-dd hh:ii:ss
-yyyy-mm-ddThh:ii:ssZ
-日期格式， p, P, h, hh, i, ii, s, ss, d, dd, m, mm, M, MM, yy, yyyy 的任意组合。*/
+ yyyy-mm-dd hh:ii
+ yyyy-mm-ddThh:ii
+ yyyy-mm-dd hh:ii:ss
+ yyyy-mm-ddThh:ii:ssZ
+ 日期格式， p, P, h, hh, i, ii, s, ss, d, dd, m, mm, M, MM, yy, yyyy 的任意组合。*/
 var time_format = "yyyy-mm-dd"
 
 $("#search_start_time").datetimepicker({//选择年月日
-　　　　　　format: time_format,
-　　　　　　language: 'zh-CN',
-　　　　　　weekStart: 1,
-　　　　　　todayBtn: 1,//显示‘今日’按钮
-　　　　　　autoclose: 1,
-　　　　　　todayHighlight: 1,
-　　　　　　startView: 2,
-　　　　　　minView: 2,  //Number, String. 默认值：0, 'hour'，日期时间选择器所能够提供的最精确的时间选择视图。
-　　　　　　clearBtn:true,//清除按钮
-　　　　　　forceParse: 0
+    format: time_format,
+    language: 'zh-CN',
+    weekStart: 1,
+    todayBtn: 1,//显示‘今日’按钮
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,  //Number, String. 默认值：0, 'hour'，日期时间选择器所能够提供的最精确的时间选择视图。
+    clearBtn: true,//清除按钮
+    forceParse: 0
 });
 $("#search_end_time").datetimepicker({//选择年月日
-　　　　　　format: time_format,
-　　　　　　language: 'zh-CN',
-　　　　　　weekStart: 1,
-　　　　　　todayBtn: 1,//显示‘今日’按钮
-　　　　　　autoclose: 1,
-　　　　　　todayHighlight: 1,
-　　　　　　startView: 2,
-　　　　　　minView: 2,  //Number, String. 默认值：0, 'hour'，日期时间选择器所能够提供的最精确的时间选择视图。
-　　　　　　clearBtn:true,//清除按钮
-　　　　　　forceParse: 0
+    format: time_format,
+    language: 'zh-CN',
+    weekStart: 1,
+    todayBtn: 1,//显示‘今日’按钮
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,  //Number, String. 默认值：0, 'hour'，日期时间选择器所能够提供的最精确的时间选择视图。
+    clearBtn: true,//清除按钮
+    forceParse: 0
 });
 
 /*
-$('.form_datetime').datetimepicker({
-        language: 'zh-CN',
-        weekStart: 1,
-        todayBtn:  1,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		forceParse: 0,
-        showMeridian: 1
-    });*/
+ $('.form_datetime').datetimepicker({
+ language: 'zh-CN',
+ weekStart: 1,
+ todayBtn:  1,
+ autoclose: 1,
+ todayHighlight: 1,
+ startView: 2,
+ forceParse: 0,
+ showMeridian: 1
+ });*/
