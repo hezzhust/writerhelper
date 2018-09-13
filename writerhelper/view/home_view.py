@@ -8,10 +8,9 @@ from django.conf import settings
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from django.utils import timezone
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 
 from wirtermodels.models import Book
-from system.system_view import permission_validate
 
 import pytz
 import json
@@ -19,7 +18,7 @@ import json
 
 # tzone = pytz.timezone(settings.TIME_ZONE)
 
-
+@login_required
 def index(request):
     context = {}
     context['title'] = '首页'
@@ -35,7 +34,6 @@ def batch_delete_book(request):
     return HttpResponse(json.dumps({"msg": '删除成功!', "code": 1}))
 
 
-
 def delete_book(request):
     id = request.POST.get('id')
     if id:
@@ -43,7 +41,6 @@ def delete_book(request):
         book.status = -1
         book.save()
     return HttpResponse(json.dumps({"msg": '删除成功', "code": 1}))
-
 
 
 def get_book_detail(request):
@@ -64,8 +61,8 @@ def get_book_detail(request):
     pass
 
 
-
-@permission_validate
+@permission_required(perm='add_book')
+@login_required
 def save_book(request):
     args = request.POST
     id = args.get('id')
