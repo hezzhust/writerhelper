@@ -4,7 +4,7 @@
     <div class="container">
         <div class="form row">
             <div class="form-horizontal col-md-offset-3" id="login_form">
-                <h3 class="form-title">登陆我吧！大大！</h3>
+                <h3 class="form-title">登陆吧！大大！</h3>
                 <div class="col-md-9">
                     <form action="{% url 'login' %}" method="post" accept-charset="utf-8" enctype="multipart/form-data">
                         {% csrf_token %}
@@ -12,7 +12,7 @@
                         <div class="form-group">
                             <i class="fa fa-user fa-lg"></i>
                             <input class="form-control required" type="text" placeholder="用户名" id="username"
-                                   name="username" autofocus="autofocus" maxlength="20"/>
+                                   name="username" autofocus="autofocus" maxlength="30"/>
                         </div>
                         <div class="form-group">
                             <i class="fa fa-lock fa-lg"></i>
@@ -26,7 +26,10 @@
                         </div>
                         <div class="form-group col-md-offset-9">
                             <button type="submit" class="btn btn-success pull-right" name="submit">登录</button>
+
+                            <a href="{% url 'register' %}" class="btn btn-success">注册</a>
                         </div>
+
                     </form>
                 </div>
             </div>

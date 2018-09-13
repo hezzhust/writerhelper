@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import redirect, render
-from django.views.decorators.csrf import csrf_exempt
 from django.contrib import auth
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 
 from .froms import UserForm,LoginForm
 
@@ -30,20 +30,25 @@ def register_view(req):
                 context['passwordDifference'] = True
                 return render(req, register_path, context)
 
-            # 判断用户是否存在
-            user = auth.authenticate(username=username, password=password)
-            if user:
+            # 判断用户是否已注册
+            count = User.objects.filter(username=username).count();
+            if count:
                 context['userExit'] = True
                 return render(req, register_path, context)
+
+            # user = auth.authenticate(username=username, password=password)
+            # if user:
+            #     context['userExit'] = True
+            #     return render(req, register_path, context)
             # 添加到数据库（还可以加一些字段的处理）
-            user = User.objects.create_user(username=username, password=password, email = email)
+            user = User.objects.create_user(username=username, password=make_password(password), email = email)
             user.save()
 
             # 添加到session
             req.session['username'] = username  # 调用auth登录
             auth.login(req, user)
             # 重定向到首页
-            return redirect('/')
+            return redirect(home_url)
 
     else:
         context = {'isLogin': False}
